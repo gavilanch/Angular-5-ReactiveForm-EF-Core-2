@@ -1,0 +1,62 @@
+<h1>{{modoEdicion ? 'Editar' : 'Agregar'}} Persona</h1>
+<form class="form-horizontal" novalidate
+      (ngSubmit)="save()" [formGroup]="formGroup">
+  <fieldset>
+
+    <div class="form-group"
+         [ngClass]="{'has-error': (formGroup.get('nombre').touched || formGroup.get('nombre').dirty) && !formGroup.get('nombre').valid }">
+      <label class="col-md-2 control-label"
+             for="nombreId">Nombre</label>
+
+      <div class="col-md-8">
+        <input class="form-control"
+               id="nombreId"
+               type="text"
+               required
+               formControlName="nombre" />
+        <span class="help-block" *ngIf="(formGroup.get('nombre').touched || formGroup.get('nombre').dirty) && formGroup.get('nombre').errors">
+          <span *ngIf="formGroup.get('nombre').errors.required">
+            El campo nombre es requerido
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group"
+         [ngClass]="{'has-error': (formGroup.get('fechaNacimiento').touched || formGroup.get('fechaNacimiento').dirty) && !formGroup.get('fechaNacimiento').valid }">
+      <label class="col-md-2 control-label"
+             for="fechaNacimiento">Fecha Nacimiento</label>
+
+      <div class="col-md-8">
+        <input class="form-control"
+               id="fechaNacimiento"
+               type="date"
+               required
+               formControlName="fechaNacimiento" />
+        <span class="help-block" *ngIf="(formGroup.get('fechaNacimiento').touched || formGroup.get('fechaNacimiento').dirty) && formGroup.get('fechaNacimiento').errors">
+          <span *ngIf="formGroup.get('fechaNacimiento').errors.required">
+            El campo Fecha Nacimiento es requerido
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-4 col-md-offset-2">
+        <span>
+          <button class="btn btn-primary"
+                  type="submit"
+                  [disabled]="!formGroup.valid">
+            Salvar
+          </button>
+          <button class="btn"
+                  [routerLink]='["/personas"]'>
+            Cancelar
+          </button>
+        </span>
+
+      </div>
+
+    </div>
+  </fieldset>
+</form>

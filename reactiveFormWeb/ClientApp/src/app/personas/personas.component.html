@@ -1,0 +1,27 @@
+<h1>Personas</h1>
+
+<button [routerLink]='["/personas-agregar"]' class="btn btn-primary">Agregar Persona</button>
+
+<p *ngIf="!(personas && personas.length)">
+  No existen registros para mostrar
+</p>
+
+<table class="table" *ngIf="personas && personas.length">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Fecha Nacimiento</th>
+      <th>Accione</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let persona of personas">
+      <td>{{persona.nombre}}</td>
+      <td>{{persona.fechaNacimiento | date : 'dd-MM-yyyy'}}</td>
+      <td>
+        <button class="btn btn-primary" [routerLink]='["/personas-editar/" + persona.id]'>Editar</button>
+        <button class="btn btn-danger" (click)="delete(persona)">Borrar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
