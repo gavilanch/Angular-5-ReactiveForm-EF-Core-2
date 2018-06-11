@@ -42,6 +42,38 @@
     </div>
 
     <div class="form-group">
+      <a class="btn btn-primary" (click)="agregarDireccion()">Agregar Dirección</a>
+    </div>
+
+    <div formArrayName="direcciones"
+         *ngFor="let direccion of formGroup.get('direcciones').controls; let i = index;">
+      <div [formGroupName]="i">
+        <div class="form-group">
+          <label class="col-md-2 control-label" [attr.for]="'calle' + i">
+            Calle
+          </label>
+          <div class="col-md-8">
+            <input class="form-control" [attr.id]="'calle' + i" type="text" formControlName="calle" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label" [attr.for]="'provincia' + i">
+            Provincia
+          </label>
+          <div class="col-md-8">
+            <input class="form-control" [attr.id]="'provincia' + i" type="text" formControlName="provincia" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-10">
+            <button type="button" class="btn btn-danger pull-right" (click)="removerDireccion(i)">Remover</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
       <div class="col-md-4 col-md-offset-2">
         <span>
           <button class="btn btn-primary"

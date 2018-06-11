@@ -29,14 +29,23 @@ namespace reactiveFormWeb.Controllers
 
         // GET: api/Personas/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPersona([FromRoute] int id)
+        public async Task<IActionResult> GetPersona([FromRoute] int id, bool incluirDirecciones = false)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var persona = await _context.Personas.SingleOrDefaultAsync(m => m.Id == id);
+            Persona persona;
+
+            if (incluirDirecciones)
+            {
+                persona = await _context.Personas.Include(x => x.Direcciones).SingleOrDefaultAsync(m => m.Id == id);
+            }
+            else
+            {
+                persona = await _context.Personas.SingleOrDefaultAsync(m => m.Id == id);
+            }
 
             if (persona == null)
             {
@@ -44,6 +53,23 @@ namespace reactiveFormWeb.Controllers
             }
 
             return Ok(persona);
+        }
+
+        private async Task CrearOEditarDirecciones(List<Direccion> direcciones)
+        {
+            List<Direccion> direccionesACrear = direcciones.Where(x => x.Id == 0).ToList();
+            List<Direccion> direccionesAEditar = direcciones.Where(x => x.Id != 0).ToList();
+
+            if (direccionesACrear.Any())
+            {
+                await _context.AddRangeAsync(direccionesACrear);
+            }
+
+            if (direccionesAEditar.Any())
+            {
+                _context.UpdateRange(direccionesAEditar);
+            }
+
         }
 
         // PUT: api/Personas/5
@@ -64,6 +90,7 @@ namespace reactiveFormWeb.Controllers
 
             try
             {
+                await CrearOEditarDirecciones(persona.Direcciones);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

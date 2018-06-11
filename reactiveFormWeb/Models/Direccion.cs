@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace reactiveFormWeb.Models
 {
-    public class Persona
+    public class Direccion
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public DateTime FechaNacimiento { get; set; }
-        public List<Direccion> Direcciones { get; set; }
+        public string Calle { get; set; }
+        public string Provincia { get; set; }
+        public int PersonaId { get; set; }
     }
 }
