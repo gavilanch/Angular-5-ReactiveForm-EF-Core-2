@@ -1,10 +1,15 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using reactiveFormWeb.Models;
+using System;
+using System.Text;
 
 namespace reactiveFormWeb
 {
@@ -23,6 +28,25 @@ namespace reactiveFormWeb
 
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+              .AddEntityFrameworkStores<ApplicationDbContext>()
+              .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = "yourdomain.com",
+                     ValidAudience = "yourdomain.com",
+                     IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(Configuration["Llave_super_secreta"])),
+                     ClockSkew = TimeSpan.Zero
+                 });
 
             services.AddMvc();
 
@@ -47,6 +71,8 @@ namespace reactiveFormWeb
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

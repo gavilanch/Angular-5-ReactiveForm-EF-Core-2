@@ -1,0 +1,71 @@
+<h1>Ingrese sus Datos</h1>
+<form class="form-horizontal" novalidate
+      [formGroup]="formGroup">
+  <fieldset>
+
+    <div class="form-group"
+         [ngClass]="{'has-error': (formGroup.get('email').touched || formGroup.get('email').dirty) && !formGroup.get('email').valid }">
+      <label class="col-md-2 control-label"
+             for="emailId">Email</label>
+
+      <div class="col-md-8">
+        <input class="form-control"
+               id="emailId"
+               type="text"
+               required
+               formControlName="email" />
+        <span class="help-block" *ngIf="(formGroup.get('email').touched || formGroup.get('email').dirty) && formGroup.get('email').errors">
+          <span *ngIf="formGroup.get('email').errors.required">
+            El campo email es requerido
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group"
+         [ngClass]="{'has-error': (formGroup.get('password').touched || formGroup.get('password').dirty) && !formGroup.get('password').valid }">
+      <label class="col-md-2 control-label"
+             for="passwordId">Password</label>
+
+      <div class="col-md-8">
+        <input class="form-control"
+               id="passwordId"
+               type="password"
+               required
+               formControlName="password" />
+        <span class="help-block" *ngIf="(formGroup.get('password').touched || formGroup.get('password').dirty) && formGroup.get('password').errors">
+          <span *ngIf="formGroup.get('password').errors.required">
+            El campo password es requerido
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-6 col-md-offset-2">
+        <span>
+          <button class="btn btn-primary"
+                  type="button"
+                  (click)="loguearse()"
+                  [disabled]="!formGroup.valid">
+            Loguearse
+          </button>
+          <button class="btn btn-primary"
+                  type="button"
+                  (click)="registrarse()"
+                  [disabled]="!formGroup.valid">
+            Registrarse
+          </button>
+          <button class="btn"
+                  type="button"
+                  [routerLink]='["/"]'>
+            Cancelar
+          </button>
+        </span>
+
+      </div>
+
+    </div>
+
+  </fieldset>
+</form>
